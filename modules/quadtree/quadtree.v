@@ -152,7 +152,7 @@ pub fn (mut q Quadtree) get_index(p AABB) []int {
         mut north := p.y < h_midpoint
         mut west := p.x < v_midpoint
         mut east := p.x + p.width > v_midpoint
-        south := p.y + p.height > h_midpoint
+        mut south := p.y + p.height > h_midpoint
 
         // top-right quad
         if north && east {
@@ -176,32 +176,36 @@ pub fn (mut q Quadtree) get_index(p AABB) []int {
         return indexes
 }
 
+[manualfree]
 pub fn (mut q Quadtree) insert(p AABB) {
         mut indexes := []int{}
 
-        if q.nodes.len > 0 == true {
+        if q.nodes.len > 0 {
                 indexes = q.get_index(p)
                 for k in 0 .. indexes.len {
                         q.nodes[indexes[k]].insert(p)
                 }
+                // unsafe { indexes.free() }
                 return
         }
-
+ 
         q.particles << p
-
+        
         if (q.particles.len > q.capacity) && (q.level < q.depth) {
                 if q.nodes.len == 0 {
                         q.split()
                 }
-
+             
                 for j in 0 .. q.particles.len {
                         indexes = q.get_index(q.particles[j])
                         for k in 0 .. indexes.len {
                                 q.nodes[indexes[k]].insert(q.particles[j])
                         }
-                }
+                }              
                 q.particles = []
+                // unsafe { indexes.free() }
         }
+      
 }
 
 pub fn (mut q Quadtree) retrieve(p AABB) []AABB {

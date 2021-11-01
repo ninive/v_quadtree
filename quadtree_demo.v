@@ -104,6 +104,7 @@ fn (mut app App) insert_particles() {
                 }
                 app.particles << Particle{random_particle, 0.0, 0.0}
         }
+        // app.cleanup()
 }
 
 fn (mut app App) find_particles() {
@@ -111,10 +112,10 @@ fn (mut app App) find_particles() {
         app.retrieveds << app.qt.retrieve(app.players[0])
 }
 
-[manualfree]
-fn (mut app App) cleanup() {
-        unsafe { app.qt.particles.free() }
-}
+// [manualfree]
+// fn (mut app App) cleanup() {
+//         unsafe { app.qt.particles.free() }
+// }
 
 [console]
 fn main() {
