@@ -1,4 +1,4 @@
-## v-quadtree 
+## v_quadtree 
 
 A quadtree data-structure module implemented in V, with a simple demo to show how to use it.
 
