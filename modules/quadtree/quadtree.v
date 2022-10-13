@@ -18,39 +18,6 @@ pub mut:
         particles []AABB
 }
 
-fn (mut p AABB) is_point() bool {
-        if p.width == 0 && p.height == 0 {
-                return true
-        }
-        return false
-}
-
-// Simple collision helper
-fn (mut p AABB) intersects(a AABB) bool {
-        amx_x := a.x + a.width
-        amx_y := a.y + a.height
-        bmx_x := p.x + p.width
-        bmx_y := p.y + p.height
-
-        if amx_x < p.x {
-                return false
-        }
-
-        if a.x > bmx_x {
-                return false
-        }
-
-        if amx_y < p.y {
-                return false
-        }
-
-        if a.y > bmx_y {
-                return false
-        }
-
-        return true
-}
-
 pub fn (mut q Quadtree) clear() {
         q.particles = []
         for j in 0 .. q.nodes.len {
@@ -176,7 +143,6 @@ pub fn (mut q Quadtree) get_index(p AABB) []int {
         return indexes
 }
 
-[manualfree]
 pub fn (mut q Quadtree) insert(p AABB) {
         mut indexes := []int{}
 
@@ -185,7 +151,6 @@ pub fn (mut q Quadtree) insert(p AABB) {
                 for k in 0 .. indexes.len {
                         q.nodes[indexes[k]].insert(p)
                 }
-                // unsafe { indexes.free() }
                 return
         }
  
@@ -203,14 +168,13 @@ pub fn (mut q Quadtree) insert(p AABB) {
                         }
                 }              
                 q.particles = []
-                // unsafe { indexes.free() }
         }
       
 }
 
 pub fn (mut q Quadtree) retrieve(p AABB) []AABB {
         mut indexes := q.get_index(p)
-        mut detected_particles := q.particles
+        mut detected_particles := q.particles.clone()
 
         if q.nodes.len > 0 {
                 for j in 0 .. indexes.len {
@@ -218,4 +182,37 @@ pub fn (mut q Quadtree) retrieve(p AABB) []AABB {
                 }
         }
         return detected_particles
+}
+
+// Simple point and collision helpers
+fn (mut p AABB) is_point() bool {
+        if p.width == 0 && p.height == 0 {
+                return true
+        }
+        return false
+}
+
+fn (mut p AABB) intersects(a AABB) bool {
+        amx_x := a.x + a.width
+        amx_y := a.y + a.height
+        bmx_x := p.x + p.width
+        bmx_y := p.y + p.height
+
+        if amx_x < p.x {
+                return false
+        }
+
+        if a.x > bmx_x {
+                return false
+        }
+
+        if amx_y < p.y {
+                return false
+        }
+
+        if a.y > bmx_y {
+                return false
+        }
+
+        return true
 }

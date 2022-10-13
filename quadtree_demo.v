@@ -68,7 +68,7 @@ fn (mut p Particle) update() {
 }
 
 fn (mut app App) start() {
-        app.players << quadtree.AABB{rand.f64n(1200.0), rand.f64n(500.0), 20, 20}
+        app.players << quadtree.AABB{1200 * rand.f64(), 500 * rand.f64(), 20, 20}
         app.insert_particles()
         for mut particle in app.particles {
                 particle.speed = 10 * rand.f64()
@@ -104,18 +104,12 @@ fn (mut app App) insert_particles() {
                 }
                 app.particles << Particle{random_particle, 0.0, 0.0}
         }
-        // app.cleanup()
 }
 
 fn (mut app App) find_particles() {
         app.retrieveds = []
         app.retrieveds << app.qt.retrieve(app.players[0])
 }
-
-// [manualfree]
-// fn (mut app App) cleanup() {
-//         unsafe { app.qt.particles.free() }
-// }
 
 [console]
 fn main() {
@@ -128,7 +122,7 @@ fn main() {
                 height: win_height
                 use_ortho: true
                 create_window: true
-                window_title: 'quadtree_demo'
+                window_title: 'Quadtree Demo'
                 frame_fn: frame
                 event_fn: on_event
                 user_data: app
@@ -169,19 +163,19 @@ fn frame(app &App) {
 
 fn (app &App) display() {
         for player in app.players {
-                app.gg.draw_rect(f32(player.x), f32(player.y), f32(player.width), f32(player.height),
+                app.gg.draw_rect_filled(f32(player.x), f32(player.y), f32(player.width), f32(player.height),
                         gx.black)
         }
         for particle in app.particles {
-                app.gg.draw_empty_rect(f32(particle.pmt.x), f32(particle.pmt.y), f32(particle.pmt.width),
+                app.gg.draw_rect_empty(f32(particle.pmt.x), f32(particle.pmt.y), f32(particle.pmt.width),
                         f32(particle.pmt.height), gx.blue)
         }
         for node in app.nodes {
-                app.gg.draw_empty_rect(f32(node.perimeter.x), f32(node.perimeter.y), f32(node.perimeter.width),
+                app.gg.draw_rect_empty(f32(node.perimeter.x), f32(node.perimeter.y), f32(node.perimeter.width),
                         f32(node.perimeter.height), gx.red)
         }
         for retrieved in app.retrieveds {
-                app.gg.draw_rect(f32(retrieved.x + 1), f32(retrieved.y + 1), f32(retrieved.width - 2),
+                app.gg.draw_rect_filled(f32(retrieved.x + 1), f32(retrieved.y + 1), f32(retrieved.width - 2),
                         f32(retrieved.height - 2), gx.green)
         }
         app.gg.draw_text(1200, 25, 'Nodes: $app.qt.get_nodes().len', font_small)
