@@ -1,4 +1,4 @@
-## v-quadtree 
+## v_quadtree 
 
 A recursive quadtree data-structure module implemented in V which is helpful in simplifying collision detection in a game, general image compression/de-noising, and other filtering use cases. 
 
