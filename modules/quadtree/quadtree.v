@@ -117,9 +117,10 @@ pub fn (mut q Quadtree) get_index(p AABB) []int {
         mut h_midpoint := q.perimeter.y + (q.perimeter.height / 2)
 
         mut north := p.y < h_midpoint
+        mut south := p.y + p.height > h_midpoint
         mut west := p.x < v_midpoint
         mut east := p.x + p.width > v_midpoint
-        mut south := p.y + p.height > h_midpoint
+        
 
         // top-right quad
         if north && east {
@@ -127,17 +128,17 @@ pub fn (mut q Quadtree) get_index(p AABB) []int {
         }
 
         // top-left quad
-        if west && north {
+        if north && west {
                 indexes << 1
         }
 
         // bottom-left quad
-        if west && south {
+        if south && west {
                 indexes << 2
         }
 
         // bottom-right quad
-        if east && south {
+        if south && east {
                 indexes << 3
         }
         return indexes
@@ -182,37 +183,4 @@ pub fn (mut q Quadtree) retrieve(p AABB) []AABB {
                 }
         }
         return detected_particles
-}
-
-// Simple point and collision helpers
-fn (mut p AABB) is_point() bool {
-        if p.width == 0 && p.height == 0 {
-                return true
-        }
-        return false
-}
-
-fn (mut p AABB) intersects(a AABB) bool {
-        amx_x := a.x + a.width
-        amx_y := a.y + a.height
-        bmx_x := p.x + p.width
-        bmx_y := p.y + p.height
-
-        if amx_x < p.x {
-                return false
-        }
-
-        if a.x > bmx_x {
-                return false
-        }
-
-        if amx_y < p.y {
-                return false
-        }
-
-        if a.y > bmx_y {
-                return false
-        }
-
-        return true
 }

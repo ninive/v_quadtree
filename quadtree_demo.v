@@ -111,7 +111,6 @@ fn (mut app App) find_particles() {
         app.retrieveds << app.qt.retrieve(app.players[0])
 }
 
-[console]
 fn main() {
         mut app := &App{
                 gg: 0
