@@ -127,7 +127,7 @@ fn main() {
                 user_data: app
                 font_path: os.resource_abs_path('./fonts/RobotoMono-Regular.ttf')
         )
-        app.qt = c_qt(0, 0, 1340, 640, 8, 4, 0)
+        app.qt = app.qt.create(0, 0, 1340, 640, 8, 4, 0)
         app.start()
         go app.run()
         app.gg.run()
@@ -186,22 +186,6 @@ fn (app &App) draw() {
 }
 
 // Helpers
-fn c_qt(x f64, y f64, width f64, height f64, capacity int, depth int, level int) quadtree.Quadtree {
-        return quadtree.Quadtree{
-                perimeter: quadtree.AABB{
-                        x: x
-                        y: y
-                        width: width
-                        height: height
-                }
-                capacity: capacity
-                depth: depth
-                level: level
-                particles: []quadtree.AABB{}
-                nodes: []quadtree.Quadtree{len: 0, cap: 4}
-        }
-}
-
 fn rand_minmax(min f64, max f64) f64 {
         mut val := min + (rand.f64() * (max - min))
         return val
