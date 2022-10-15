@@ -71,7 +71,7 @@ fn (mut app App) start() {
         app.players << quadtree.AABB{1200 * rand.f64(), 500 * rand.f64(), 20, 20}
         app.insert_particles()
         for mut particle in app.particles {
-                particle.speed = 10 * rand.f64()
+                particle.speed = 12 * rand.f64()
                 particle.angle = 200 * rand.f64()
         }
         app.nodes << app.qt.get_nodes()
@@ -177,7 +177,7 @@ fn (app &App) display() {
                 app.gg.draw_rect_filled(f32(retrieved.x + 1), f32(retrieved.y + 1), f32(retrieved.width - 2),
                         f32(retrieved.height - 2), gx.green)
         }
-        app.gg.draw_text(1200, 25, 'Nodes: $app.qt.get_nodes().len', font_small)
+        app.gg.draw_text(1200, 25, 'Nodes: $app.nodes.len', font_small)
         app.gg.draw_text(1200, 50, 'Particles: $app.particles.len', font_small)
 }
 
@@ -185,7 +185,6 @@ fn (app &App) draw() {
         app.display()
 }
 
-// Helpers
 fn rand_minmax(min f64, max f64) f64 {
         mut val := min + (rand.f64() * (max - min))
         return val
