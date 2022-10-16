@@ -14,8 +14,8 @@ pub mut:
         capacity  int
         depth     int
         level     int
-        nodes     []Quadtree
         particles []AABB
+        nodes     []Quadtree
 }
 
 pub fn (mut q Quadtree) create(x f64, y f64, width f64, height f64, capacity int, depth int, level int) Quadtree {

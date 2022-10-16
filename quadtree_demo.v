@@ -71,7 +71,7 @@ fn (mut app App) start() {
         app.players << quadtree.AABB{1200 * rand.f64(), 500 * rand.f64(), 20, 20}
         app.insert_particles()
         for mut particle in app.particles {
-                particle.speed = 12 * rand.f64()
+                particle.speed = 8 * rand.f64()
                 particle.angle = 200 * rand.f64()
         }
         app.nodes << app.qt.get_nodes()
